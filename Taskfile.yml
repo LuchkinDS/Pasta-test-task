@@ -1,0 +1,29 @@
+version: 3
+
+tasks:
+  docker-up:
+    aliases: [up]
+    cmd: docker compose up -d
+
+  docker-down:
+    aliases: [down]
+    cmd: docker compose down --remove-orphans
+
+  docker-build:
+    aliases: [rebuild]
+    cmd: docker compose build --progress=plain
+
+  docker-status:
+    aliases: [status, stat, ps]
+    cmd: docker compose ps
+
+  restart:
+    cmds:
+      - task: down
+      - task: up
+
+  cli:
+    cmd: docker exec -it php-paste-s7 bash
+
+  clib:
+    cmd: docker exec -it mysql8-paste-s7 bash
