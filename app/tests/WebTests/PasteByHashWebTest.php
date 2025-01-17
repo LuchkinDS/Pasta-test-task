@@ -53,7 +53,7 @@ class PasteByHashWebTest extends WebTestCase
         $this->client->request('GET', '/678809cc085e9');
 
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('div', 'test content 1');
+        $this->assertSelectorTextContains('div>div>div', 'test content 1');
     }
 
     public function test404PasteByHas(): void
@@ -63,7 +63,7 @@ class PasteByHashWebTest extends WebTestCase
         $this->client->request('GET', '/678809cc085e9');
 
         $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
-        $this->assertSelectorTextContains('div', 'Not Found (#404)');
+        $this->assertSelectorTextContains('div>div>div', 'Not Found (#404)');
     }
 
     protected function tearDown(): void

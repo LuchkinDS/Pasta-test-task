@@ -5,41 +5,59 @@
 
     {{ form_start(form, {'action': path('create_paste'), 'method': 'POST'}) }}
 
-    <div class="row">
-        <div class="col">
-            <label>
-                {{ field_label(form.title) }}
-                <input
-                    name="{{ field_name(form.title, 'title') }}"
-                    value="{{ field_value(form.title) }}"
-                    placeholder="{{ field_label(form.title) }}"
-                    class="form-control"
-                >
-                <div class="form-error">
-                    {{ form_errors(form.title) }}
-                </div>
-            </label>
-        </div>
-        <div class="col" id="some-custom-id">
-            <label>
-                {{ field_label(form.content) }}
-                <textarea
-                    name="{{ field_name(form.content) }}"
-                    placeholder="{{ field_label(form.content) }}"
-                    class="form-control"
-                >{{ field_value(form.content, 'content') }}</textarea>
-                <div class="form-error">
-                    {{ form_errors(form.content) }}
-                </div>
-            </label>
-        </div>
-        <div class="col" id="some-custom-id">
-            {{ form_row(form.expiration) }}
-        </div>
-        <div class="col" id="some-custom-id">
-            {{ form_row(form.exposure) }}
+    <div class="mb-3">
+        <label for="paste-form-content" class="form-label">{{ field_label(form.content) }}</label>
+        <textarea
+                id="paste-form-content"
+                class="form-control {{ form.content.vars.errors|length ? 'is-invalid' : '' }}"
+                rows="3"
+                name="{{ field_name(form.content) }}"
+                placeholder="{{ field_label(form.content) }}"
+        >{{ field_value(form.content) }}</textarea>
+        <div class="invalid-feedback">
+            {{ form_errors(form.content) }}
         </div>
     </div>
+
+    <div class="mb-3">
+        <label for="paste-form-title" class="form-label">{{ field_label(form.title) }}</label>
+        <input
+                id="paste-form-title"
+                type="text"
+                class="form-control {{ form.title.vars.errors|length ? 'is-invalid' : '' }}"
+                name="{{ field_name(form.title) }}"
+                placeholder="{{ field_label(form.title) }}"
+                value="{{ field_value(form.title) }}"
+        >
+        <div class="invalid-feedback">
+            {{ form_errors(form.title) }}
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="paste-form-expiration" class="form-label">{{ field_label(form.expiration) }}</label>
+        <select id="paste-form-expiration" name="{{ field_name(form.expiration) }}" class="form-select">
+            {% for label, value in field_choices(form.expiration) %}
+                <option value="{{ value }}">{{ label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="paste-form-exposure" class="form-label">{{ field_label(form.exposure) }}</label>
+        <select id="paste-form-exposure" name="{{ field_name(form.exposure) }}" class="form-select">
+            {% for label, value in field_choices(form.exposure) %}
+                <option value="{{ value }}">{{ label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+
+    <div class="mb-3">
+        {{ form_widget(form.cooking, {'attr': {'class': 'btn btn-primary'} }) }}
+    </div>
+
+    {{ form_rest(form) }}
     {{ form_end(form) }}
 
 {% endblock %}

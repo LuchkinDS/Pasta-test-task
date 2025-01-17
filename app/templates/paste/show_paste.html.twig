@@ -6,11 +6,11 @@
 {% block body %}
 
     {% for flashMessage in app.session.flashbag.get('posted_pasta') %}
-        <div class="row">
+        <div class="alert alert-success" role="alert">
             {{ flashMessage }}
         </div>
     {% endfor %}
-    <div class="row">
+    <div class="alert alert-secondary" role="alert">
         {{ paste.content }}
     </div>
 {% endblock %}

@@ -11,7 +11,7 @@ class ShowPublicPasteTest extends WebTestCase
         $client = static::createClient();
         static::bootKernel();
 
-        $client->request('GET', '/paste/create');
+        $client->request('GET', '/');
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorExists('form');
@@ -22,7 +22,7 @@ class ShowPublicPasteTest extends WebTestCase
         $client = static::createClient();
         static::bootKernel();
 
-        $crawler = $client->request('GET', '/paste/create');
+        $crawler = $client->request('GET', '/');
 
         $form = $crawler->selectButton('Cooking')->form();
         $client->submit($form);
@@ -36,7 +36,7 @@ class ShowPublicPasteTest extends WebTestCase
         $client = static::createClient();
         static::bootKernel();
 
-        $crawler = $client->request('GET', '/paste/create');
+        $crawler = $client->request('GET', '/');
         $form = $crawler->selectButton('Cooking')->form();
         $form['paste[title]']->setValue('Paste test title');
         $form['paste[content]']->setValue('Paste test content');
@@ -51,7 +51,7 @@ class ShowPublicPasteTest extends WebTestCase
         $client = static::createClient();
         static::bootKernel();
 
-        $crawler = $client->request('GET', '/paste/create');
+        $crawler = $client->request('GET', '/');
         $form = $crawler->selectButton('Cooking')->form();
         $form['paste[content]']->setValue('Paste test content');
 

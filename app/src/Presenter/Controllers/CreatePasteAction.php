@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class CreatePasteAction extends AbstractController
 {
-    #[Route(path: 'paste/create', name: 'create_paste', methods: ['GET', 'POST'])]
+    #[Route(path: '/', name: 'create_paste', methods: ['GET', 'POST'])]
     public function form(Request $request, PasteService $services): Response
     {
         $paste = new Paste();

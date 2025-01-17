@@ -2,11 +2,6 @@
 {% extends 'base.html.twig' %}
 {% block title %}Not Found (#404)!{% endblock %}
 {% block body %}
-    <div>Not Found (#404)</div>
-    <div>This page is no longer available. It has either expired, been removed by its creator.</div>
-    <div class="row">
-        {% for paste in pastes.items %}
-            {{ paste.content }}
-        {% endfor %}
-    </div>
+    <div class="alert alert-success" role="alert">Not Found (#404)</div>
+    <div class="alert alert-info" role="alert">This page is no longer available. It has either expired, been removed by its creator.</div>
 {% endblock %}
