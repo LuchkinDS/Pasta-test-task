@@ -31,11 +31,15 @@ final readonly class PasteRepository implements PasteRepositoryInterface
     {
         $dql = <<<DQL
             SELECT p FROM App\Data\Entities\Paste p
-            WHERE p.hash = :hash
+            WHERE p.hash = :hash AND p.expirationDate >= :currentDatetime
         DQL;
+        $currentDate = (new DateTimeImmutable())
+            ->setTimezone(new DateTimeZone('UTC'))
+            ->format('Y-m-d H:i:s');
         $query = $this->em->createQuery($dql);
         return $query
             ->setParameter(':hash', $hash)
+            ->setParameter(':currentDatetime', $currentDate)
             ->getOneOrNullResult();
     }
 
