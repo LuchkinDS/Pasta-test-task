@@ -24,6 +24,3 @@ tasks:
 
   cli:
     cmd: docker exec -it php-paste-s7 bash
-
-  clib:
-    cmd: docker exec -it mysql8-paste-s7 bash
