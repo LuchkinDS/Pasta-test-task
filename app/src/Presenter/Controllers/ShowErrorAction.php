@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Presenter\Controllers;
+use App\Domain\Entities\Pager;
 use App\Domain\Exceptions\PasteNotFoundException;
 use App\Domain\Services\PasteService;
 use Exception;
-use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
@@ -25,7 +25,7 @@ final class ShowErrorAction extends AbstractController
 
     private function pasteNotFoundPage(Exception $exception): Response
     {
-        $pastes = $this->pasteService->getPublicPastes();
+        $pastes = $this->pasteService->getPublicPastes(new Pager());
         return $this->render('paste/error.html.twig', [
             'pastes' => $pastes,
         ], new Response($exception->getMessage(), Response::HTTP_NOT_FOUND));
