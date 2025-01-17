@@ -1,14 +1,14 @@
 <?php
 
 namespace App\Presenter\Controllers;
-use App\Domain\Services\PasteServices;
+use App\Domain\Services\PasteService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class ShowPasteAction extends AbstractController
 {
-    public function __construct(private readonly PasteServices $pasteServices)
+    public function __construct(private readonly PasteService $pasteServices)
     {
     }
 
@@ -16,7 +16,7 @@ final class ShowPasteAction extends AbstractController
     public function __invoke(string $hash): Response
     {
         $paste = $this->pasteServices->getPaste($hash);
-        return $this->render('paste/show.html.twig', [
+        return $this->render('paste/show_paste.html.twig', [
             'paste' => $paste,
         ]);
     }

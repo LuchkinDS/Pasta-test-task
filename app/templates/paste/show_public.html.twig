@@ -1,0 +1,10 @@
+{# templates/default/index.html.twig #}
+{% extends 'base.html.twig' %}
+{% block title %}Pasta to go!{% endblock %}
+{% block body %}
+    <div class="row">
+        {% for paste in pastes.items %}
+            {{ paste.content }}
+        {% endfor %}
+    </div>
+{% endblock %}

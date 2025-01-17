@@ -6,10 +6,11 @@ use App\Domain\Entities\HashGeneratorInterface;
 use App\Domain\Entities\Paste;
 use App\Domain\Entities\PasteRequest;
 use App\Domain\Entities\PasteResponse;
+use App\Domain\Entities\PastesResponse;
 use App\Domain\Exceptions\UniqueHashException;
 use App\Domain\Repositories\PasteRepositoryInterface;
 
-final readonly class PasteServices
+final readonly class PasteService
 {
     public function __construct(
         private PasteRepositoryInterface $repository,
@@ -30,11 +31,16 @@ final readonly class PasteServices
         if ($this->repository->hasHash($paste->getHash())) {
             throw new UniqueHashException('Hash has already exist.');
         }
-        return $this->repository->save($paste);
+        return $this->repository->create($paste);
     }
 
     public function getPaste(string $hash): ?PasteResponse
     {
         return $this->repository->getPasteByHash($hash);
+    }
+
+    public function getPublicPastes(): PastesResponse
+    {
+        return $this->repository->getPublicPaste();
     }
 }

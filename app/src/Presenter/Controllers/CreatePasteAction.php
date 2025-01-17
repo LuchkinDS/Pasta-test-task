@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Presenter\Controllers;
-use App\Domain\Services\PasteServices;
+use App\Domain\Services\PasteService;
 use App\Presenter\Entities\Paste;
 use App\Presenter\Entities\PasteType;
 use App\Presenter\Mapper\PasteMapper;
@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class CreatePasteAction extends AbstractController
 {
     #[Route(path: 'paste/create', name: 'create_paste', methods: ['GET', 'POST'])]
-    public function form(Request $request, PasteServices $services): Response
+    public function form(Request $request, PasteService $services): Response
     {
         $paste = new Paste();
         $form = $this->createForm(PasteType::class, $paste);

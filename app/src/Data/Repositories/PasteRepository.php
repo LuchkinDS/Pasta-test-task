@@ -6,8 +6,11 @@ use App\Data\Entities\Paste as PasteDb;
 use App\Data\Mappers\MapperPaste;
 use App\Domain\Entities\Paste;
 use App\Domain\Entities\PasteResponse;
+use App\Domain\Entities\PastesResponse;
 use App\Domain\Exceptions\PasteNotFoundException;
 use App\Domain\Repositories\PasteRepositoryInterface;
+use DateTimeImmutable;
+use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class PasteRepository implements PasteRepositoryInterface
@@ -16,7 +19,7 @@ final readonly class PasteRepository implements PasteRepositoryInterface
     {
     }
 
-    public function save(Paste $paste): PasteResponse
+    public function create(Paste $paste): PasteResponse
     {
         $pasteDb = MapperPaste::pasteToPasteDb($paste);
         $this->em->persist($pasteDb);
@@ -48,5 +51,23 @@ final readonly class PasteRepository implements PasteRepositoryInterface
             throw new PasteNotFoundException("Paste with hash {$hash} not found!");
         }
         return MapperPaste::pasteDbToPasteResponse($paste);
+    }
+
+    public function getPublicPaste(): PastesResponse
+    {
+        $dql = <<<DQL
+            SELECT p FROM App\Data\Entities\Paste p
+            WHERE p.expirationDate >= :currentDate
+            AND p.exposure = 'public'
+        DQL;
+        $query = $this->em->createQuery($dql);
+        $currentDate = (new DateTimeImmutable())
+            ->setTimezone(new DateTimeZone('UTC'))
+            ->format('Y-m-d H:i:s');
+        $result =  $query
+            ->setParameter(':currentDate', $currentDate)
+            ->setMaxResults(10)
+            ->getResult();
+        return MapperPaste::pastesDbToPastesResponse($result);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Data\Mappers;
 use App\Domain\Entities\Paste;
 use App\Data\Entities\Paste as PasteDb;
 use App\Domain\Entities\PasteResponse;
+use App\Domain\Entities\PastesResponse;
 
 class MapperPaste
 {
@@ -29,6 +30,14 @@ class MapperPaste
             expirationDate: $pasteDb->getExpirationDate(),
             exposure: $pasteDb->getExposure(),
             hash: $pasteDb->getHash()
+        );
+    }
+
+    /** @param array<PasteDb> $pastesDb */
+    public static function pastesDbToPastesResponse(array $pastesDb): PastesResponse
+    {
+        return new PastesResponse(
+            items: array_map(static fn($pasteDb) => self::pasteDbToPasteResponse($pasteDb), $pastesDb)
         );
     }
 }
