@@ -5,6 +5,7 @@ namespace App\Tests\Functional;
 use App\Data\Entities\Paste;
 use App\Data\Mappers\MapperPaste;
 use App\Domain\Entities\Exposure;
+use App\Domain\Entities\Pager;
 use App\Domain\Entities\PastesResponse;
 use App\Domain\Entities\SimpleHashGenerator;
 use App\Domain\Repositories\PasteRepositoryInterface;
@@ -60,7 +61,7 @@ class ShowPublicPasteTest extends KernelTestCase
         }
         $this->entityManager->flush();
 
-        $pastes = $this->repository->getPublicPaste();
+        $pastes = $this->repository->getPublicPaste(new Pager());
 
         assertNotEmpty($pastes);
         assertInstanceOf(PastesResponse::class, $pastes);
@@ -86,7 +87,7 @@ class ShowPublicPasteTest extends KernelTestCase
         }
         $this->entityManager->flush();
 
-        $pastes = $this->repository->getPublicPaste();
+        $pastes = $this->repository->getPublicPaste(new Pager());
 
         assertNotEmpty($pastes);
         assertInstanceOf(PastesResponse::class, $pastes);
@@ -141,7 +142,7 @@ class ShowPublicPasteTest extends KernelTestCase
 
         $this->entityManager->flush();
 
-        $pastes = $this->repository->getPublicPaste();
+        $pastes = $this->repository->getPublicPaste(new Pager());
 
         assertNotEmpty($pastes);
         assertInstanceOf(PastesResponse::class, $pastes);

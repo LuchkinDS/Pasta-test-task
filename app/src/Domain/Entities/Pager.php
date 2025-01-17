@@ -13,6 +13,6 @@ final readonly class Pager
     }
     public function getMaxPage(): int
     {
-        return $this->total/$this->limit;
+        return floor($this->total/$this->limit);
     }
 }
