@@ -12,6 +12,8 @@ use App\Domain\Repositories\PasteRepositoryInterface;
 use DateTimeImmutable;
 use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 
 final readonly class PasteRepository implements PasteRepositoryInterface
 {
@@ -29,23 +31,30 @@ final readonly class PasteRepository implements PasteRepositoryInterface
 
     public function findPasteByHash(string $hash): ?PasteDb
     {
-        $dql = <<<DQL
-            SELECT p FROM App\Data\Entities\Paste p
-            WHERE p.hash = :hash AND p.expirationDate >= :currentDatetime
-        DQL;
         $currentDate = (new DateTimeImmutable())
             ->setTimezone(new DateTimeZone('UTC'))
             ->format('Y-m-d H:i:s');
-        $query = $this->em->createQuery($dql);
-        return $query
-            ->setParameter(':hash', $hash)
-            ->setParameter(':currentDatetime', $currentDate)
-            ->getOneOrNullResult();
+        $builder = $this
+            ->getQueryBuilderFindPasteByHash($hash)
+            ->andWhere('p.expirationDate >= :currentDate')
+            ->setParameter('currentDate', $currentDate);
+        return $builder->getQuery()->getOneOrNullResult();
+    }
+
+    private function getQueryBuilderFindPasteByHash(string $hash): QueryBuilder
+    {
+        $builder = $this->em
+            ->createQueryBuilder()
+            ->select('p')
+            ->from(PasteDb::class, 'p')
+            ->where("p.hash = :hash");
+
+        return $builder->setParameter(':hash', $hash);
     }
 
     public function hasHash(string $hash): bool
     {
-        return !is_null($this->findPasteByHash($hash, null));
+        return !is_null($this->getQueryBuilderFindPasteByHash($hash)->getQuery()->getOneOrNullResult());
     }
 
     public function getPasteByHash(string $hash): PasteResponse
