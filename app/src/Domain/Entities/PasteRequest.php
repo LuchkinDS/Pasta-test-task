@@ -2,17 +2,13 @@
 
 namespace App\Domain\Entities;
 
-use DateTimeImmutable;
-
-final readonly class PasteResponse
+final readonly class PasteRequest
 {
     public function __construct(
         public ?string $title,
         public string $content,
-        public DateTimeImmutable $releaseDate,
-        public DateTimeImmutable $expirationDate,
+        public Expiration $expiration,
         public Exposure $exposure,
-        public string $hash,
     )
     {
     }

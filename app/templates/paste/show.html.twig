@@ -1,0 +1,16 @@
+{# templates/default/index.html.twig #}
+{% extends 'base.html.twig' %}
+{% block title %}
+    Dinner is served!{% if paste is not null %}::{{ paste.title }}{% endif %}
+{% endblock %}
+{% block body %}
+
+    {% for flashMessage in app.session.flashbag.get('posted_pasta') %}
+        <div class="row">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+    <div class="row">
+        {{ paste.content }}
+    </div>
+{% endblock %}
