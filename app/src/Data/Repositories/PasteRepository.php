@@ -4,6 +4,7 @@ namespace App\Data\Repositories;
 
 use App\Data\Entities\Paste as PasteDb;
 use App\Data\Mappers\MapperPaste;
+use App\Domain\Entities\Pager;
 use App\Domain\Entities\Paste;
 use App\Domain\Entities\PasteResponse;
 use App\Domain\Entities\PastesResponse;
@@ -12,12 +13,15 @@ use App\Domain\Repositories\PasteRepositoryInterface;
 use DateTimeImmutable;
 use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
+use Knp\Component\Pager\PaginatorInterface;
 
 final readonly class PasteRepository implements PasteRepositoryInterface
 {
-    public function __construct(private EntityManagerInterface $em)
+    public function __construct(
+        private EntityManagerInterface $em,
+        private PaginatorInterface $paginator,
+    )
     {
     }
 
@@ -26,6 +30,7 @@ final readonly class PasteRepository implements PasteRepositoryInterface
         $pasteDb = MapperPaste::pasteToPasteDb($paste);
         $this->em->persist($pasteDb);
         $this->em->flush();
+        $this->em->clear();
         return MapperPaste::pasteDbToPasteResponse($pasteDb);
     }
 
@@ -66,21 +71,24 @@ final readonly class PasteRepository implements PasteRepositoryInterface
         return MapperPaste::pasteDbToPasteResponse($paste);
     }
 
-    public function getPublicPaste(): PastesResponse
+    public function getPublicPaste(Pager $pager): PastesResponse
     {
         $dql = <<<DQL
             SELECT p FROM App\Data\Entities\Paste p
             WHERE p.expirationDate >= :currentDate
             AND p.exposure = 'public'
+            ORDER BY p.id DESC
         DQL;
-        $query = $this->em->createQuery($dql);
         $currentDate = (new DateTimeImmutable())
             ->setTimezone(new DateTimeZone('UTC'))
             ->format('Y-m-d H:i:s');
-        $result =  $query
-            ->setParameter(':currentDate', $currentDate)
-            ->setMaxResults(10)
-            ->getResult();
-        return MapperPaste::pastesDbToPastesResponse($result);
+        $query = $this->em->createQuery($dql)
+            ->setParameter(':currentDate', $currentDate);
+        $pagination = $this->paginator->paginate(
+            $query,
+            $pager->page,
+            $pager->limit
+        );
+        return MapperPaste::paginatorToPastesResponse($pagination);
     }
 }

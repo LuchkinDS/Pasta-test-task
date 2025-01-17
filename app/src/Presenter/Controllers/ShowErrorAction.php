@@ -15,7 +15,7 @@ final class ShowErrorAction extends AbstractController
     public function __construct(private readonly PasteService $pasteService)
     {
     }
-    public function show(Exception $exception, ?DebugLoggerInterface $logger): Response
+    public function show(Throwable $exception, ?DebugLoggerInterface $logger): Response
     {
         return match (get_class($exception)) {
             PasteNotFoundException::class => $this->pasteNotFoundPage($exception),

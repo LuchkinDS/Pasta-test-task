@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Presenter\Mapper;
+namespace App\Presenter\Mappers;
 
 use App\Domain\Entities\PasteRequest;
 use App\Presenter\Entities\Paste;
 
-class PasteMapper
+class MapperPaste
 {
     public static function pasteToPasteRequest(Paste $paste): PasteRequest
     {

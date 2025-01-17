@@ -2,6 +2,7 @@
 
 namespace App\Presenter\TwigExtensions;
 
+use App\Domain\Entities\Pager;
 use App\Domain\Services\PasteService;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
@@ -25,7 +26,7 @@ final class PublicPastesWidget extends AbstractExtension
 
     public function renderPublicPastesWidget(): string
     {
-        $pastes = $this->pasteService->getPublicPastes();
+        $pastes = $this->pasteService->getPublicPastes(new Pager());
         return $this->twig->render('paste/public_pastes_widget.html.twig', [
             'pastes' => $pastes,
         ]);

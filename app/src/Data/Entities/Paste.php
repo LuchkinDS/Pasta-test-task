@@ -5,7 +5,6 @@ namespace App\Data\Entities;
 use App\Data\Repositories\PasteRepository;
 use App\Domain\Entities\Exposure;
 use DateTimeImmutable;
-use DateTimeZone;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 

@@ -60,4 +60,28 @@
     {{ form_rest(form) }}
     {{ form_end(form) }}
 
+    <div class="list-group mb-3">
+        {% for paste in pastes.items %}
+            <a href="{{ path('show_paste', {'hash': paste.hash}) }}" class="list-group-item list-group-item-action" aria-current="true">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ paste.title }}</h5>
+                </div>
+                <p class="mb-1 text-truncate">{{ paste.content }}</p>
+            </a>
+        {% endfor %}
+    </div>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            {% for pageNumber in 0..pastes.pager.getMaxPage %}
+            <li class="page-item">
+                <a
+                    class="page-link"
+                    href="{{ path('create_paste', {'page': pageNumber, 'limit': pastes.pager.limit}) }}"
+                >{{ pageNumber }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </nav>
+
 {% endblock %}

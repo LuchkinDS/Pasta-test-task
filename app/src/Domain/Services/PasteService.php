@@ -3,6 +3,7 @@
 namespace App\Domain\Services;
 
 use App\Domain\Entities\HashGeneratorInterface;
+use App\Domain\Entities\Pager;
 use App\Domain\Entities\Paste;
 use App\Domain\Entities\PasteRequest;
 use App\Domain\Entities\PasteResponse;
@@ -39,8 +40,8 @@ final readonly class PasteService
         return $this->repository->getPasteByHash($hash);
     }
 
-    public function getPublicPastes(): PastesResponse
+    public function getPublicPastes(Pager $pager): PastesResponse
     {
-        return $this->repository->getPublicPaste();
+        return $this->repository->getPublicPaste($pager);
     }
 }
