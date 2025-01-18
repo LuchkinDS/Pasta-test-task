@@ -2,70 +2,42 @@
 
 namespace App\Domain\Entities;
 
-use DateInterval;
 use DateTimeImmutable;
-use DateTimeZone;
 
-class Paste
+final class Paste
 {
-    private DateTimeImmutable $releaseDate;
-    private DateTimeImmutable $expirationDate;
-    private string $hash;
+    private Exposure $exposure;
     public function __construct(
-        public readonly ?string $title,
-        public readonly string $content,
-        public readonly Expiration $expiration,
-        public readonly Exposure $exposure,
-        private readonly HashGeneratorInterface $hashGenerator,
+        public readonly ?int              $id = null,
+        public readonly ?string           $title,
+        public readonly string            $content,
+        public readonly DateTimeImmutable $releaseDate,
+        public readonly DateTimeImmutable $expirationDate,
+        Exposure          $exposure,
+        public readonly string            $hash,
+        public readonly bool           $burn,
+        public readonly int $read,
     )
     {
+        $this->setExposure($exposure);
     }
 
-    public static function new(?string $title, string $content, Expiration $expiration, Exposure $exposure, HashGeneratorInterface $generator): self
+    public static function burn()
     {
-        $paste = new Paste(
-            title: $title,
-            content: $content,
-            expiration: $expiration,
-            exposure: $exposure,
-            hashGenerator: $generator
-        );
-        return $paste->create();
+        // TODO: 1. фабрика для создания paste (в фабрику перенести генератор хэша, и enums)
+        // TODO: 2. в ответ от Data добавить id, для возможности апдейта pasta
     }
 
-    public function create(): self
+    public function getExposure(): Exposure
     {
-        $currentDate = (new DateTimeImmutable())
-            ->setTimezone(new DateTimeZone('UTC'));
-        $this->releaseDate = $currentDate;
-        $this->expirationDate = $currentDate->add($this->getDateInterval());
-        $this->hash = $this->hashGenerator->getHash();
-        return $this;
+        return $this->exposure;
     }
 
-    private function getDateInterval(): DateInterval
+    private function setExposure(Exposure $exposure): void
     {
-        return match ($this->expiration) {
-            Expiration::Newer => new DateInterval("P100Y"),
-            Expiration::Hour => new DateInterval("PT1H"),
-            Expiration::Day => new DateInterval("P1D"),
-            Expiration::Week => new DateInterval("P1W"),
-            Expiration::Month => new DateInterval("P1M"),
-        };
-    }
-
-    public function getHash(): string
-    {
-        return $this->hash;
-    }
-
-    public function getExpirationDate(): DateTimeImmutable
-    {
-        return $this->expirationDate;
-    }
-
-    public function getReleaseDate(): DateTimeImmutable
-    {
-        return $this->releaseDate;
+        $this->exposure = $exposure;
+        if ($this->burn) {
+            $this->exposure = Exposure::Unlisted;
+        }
     }
 }

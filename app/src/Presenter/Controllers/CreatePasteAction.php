@@ -3,7 +3,7 @@
 namespace App\Presenter\Controllers;
 use App\Domain\Services\PasteService;
 use App\Presenter\Entities\PagerRequest;
-use App\Presenter\Entities\Paste;
+use App\Presenter\Entities\PasteForm;
 use App\Presenter\Entities\PasteType;
 use App\Presenter\Mappers\MapperPager;
 use App\Presenter\Mappers\MapperPaste;
@@ -18,7 +18,7 @@ class CreatePasteAction extends AbstractController
     #[Route(path: '/', name: 'create_paste', methods: ['GET', 'POST'])]
     public function form(Request $request, #[MapQueryString] PagerRequest $pager, PasteService $services): Response
     {
-        $paste = new Paste();
+        $paste = new PasteForm();
         $form = $this->createForm(PasteType::class, $paste);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

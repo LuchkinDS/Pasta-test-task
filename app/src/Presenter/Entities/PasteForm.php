@@ -6,7 +6,7 @@ use App\Domain\Entities\Expiration;
 use App\Domain\Entities\Exposure;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class Paste
+class PasteForm
 {
     #[Assert\Length(max: 255)]
     public ?string $title = null;
@@ -19,4 +19,5 @@ class Paste
     #[Assert\NotBlank]
     #[Assert\Type(type: Exposure::class)]
     public Exposure $exposure;
+    public bool $burn = false;
 }

@@ -3,7 +3,7 @@
 {% block title %}Create your paste!{% endblock %}
 {% block body %}
 
-    {{ form_start(form, {'action': path('create_paste'), 'method': 'POST'}) }}
+    {{ form_start(form, {'action': path('create_paste', {'XDEBUG_SESSION': 1}), 'method': 'POST'}) }}
 
     <div class="mb-3">
         <label for="paste-form-content" class="form-label">{{ field_label(form.content) }}</label>
@@ -52,6 +52,18 @@
         </select>
     </div>
 
+    <div class="mb-3">
+        <input
+            class="form-check-input"
+            type="checkbox"
+            name="{{ field_name(form.burn) }}"
+            value="{{ field_value(form.burn) }}"
+            id="paste-form-burn"
+        >
+        <label class="form-check-label" for="paste-form-burn">
+            {{ field_label(form.burn) }}
+        </label>
+    </div>
 
     <div class="mb-3">
         {{ form_widget(form.cooking, {'attr': {'class': 'btn btn-primary'} }) }}
@@ -71,7 +83,7 @@
         {% endfor %}
     </div>
 
-    <nav aria-label="Page navigation example">
+    <nav>
         <ul class="pagination justify-content-center">
             {% for pageNumber in 1..pastes.pager.getMaxPage %}
             <li class="page-item">

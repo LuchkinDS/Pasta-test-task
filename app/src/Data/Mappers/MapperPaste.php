@@ -14,24 +14,30 @@ class MapperPaste
     public static function pasteToPasteDb(Paste $paste): PasteDb
     {
         return PasteDb::new(
+            id: $paste->id,
             title: $paste->title,
             content: $paste->content,
-            releaseDate: $paste->getReleaseDate(),
-            expirationDate: $paste->getExpirationDate(),
-            exposure: $paste->exposure,
-            hash: $paste->getHash(),
+            releaseDate: $paste->releaseDate,
+            expirationDate: $paste->expirationDate,
+            exposure: $paste->getExposure(),
+            hash: $paste->hash,
+            burn: $paste->burn,
+            read: $paste->read,
         );
     }
 
     public static function pasteDbToPasteResponse(PasteDb $pasteDb): PasteResponse
     {
         return new PasteResponse(
+            id: $pasteDb->getId(),
             title: $pasteDb->getTitle(),
             content: $pasteDb->getContent(),
             releaseDate: $pasteDb->getReleaseDate(),
             expirationDate: $pasteDb->getExpirationDate(),
             exposure: $pasteDb->getExposure(),
-            hash: $pasteDb->getHash()
+            hash: $pasteDb->getHash(),
+            burn: $pasteDb->isBurn(),
+            read: $pasteDb->getRead(),
         );
     }
 

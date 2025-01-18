@@ -56,6 +56,8 @@ class ShowPublicPasteTest extends KernelTestCase
                 expirationDate: $currentDateTime->sub($minuteInterval),
                 exposure: Exposure::Public,
                 hash: (new SimpleHashGenerator())->getHash(),
+                burn: false,
+                read: 0,
             );
             $this->entityManager->persist($paste);
         }
@@ -82,6 +84,8 @@ class ShowPublicPasteTest extends KernelTestCase
                 expirationDate: $currentDateTime->add($hourInterval),
                 exposure: Exposure::Public,
                 hash: (new SimpleHashGenerator())->getHash(),
+                burn: false,
+                read: 0,
             );
             $this->entityManager->persist($paste);
         }
@@ -109,6 +113,8 @@ class ShowPublicPasteTest extends KernelTestCase
             expirationDate: $currentDateTime->add($hourInterval),
             exposure: Exposure::Public,
             hash: (new SimpleHashGenerator())->getHash(),
+            burn: false,
+            read: 0,
         );
         $this->entityManager->persist($paste);
 
@@ -123,6 +129,8 @@ class ShowPublicPasteTest extends KernelTestCase
             expirationDate: $currentDateTime->sub($minuteInterval),
             exposure: Exposure::Public,
             hash: (new SimpleHashGenerator())->getHash(),
+            burn: false,
+            read: 0,
         );
         $this->entityManager->persist($paste);
 
@@ -137,6 +145,8 @@ class ShowPublicPasteTest extends KernelTestCase
             expirationDate: $currentDateTime->add($hourInterval),
             exposure: Exposure::Unlisted,
             hash: (new SimpleHashGenerator())->getHash(),
+            burn: false,
+            read: 0,
         );
         $this->entityManager->persist($paste);
 

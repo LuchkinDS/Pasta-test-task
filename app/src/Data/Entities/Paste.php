@@ -31,6 +31,10 @@ final class Paste
     private Exposure $exposure;
     #[ORM\Column(type: Types::STRING, unique: true)]
     private string $hash;
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $burn;
+    #[ORM\Column(type: Types::INTEGER, options: ['default' => 0])]
+    private int $wasRead;
     public function __construct(
         ?int $id,
         ?string $title,
@@ -39,6 +43,8 @@ final class Paste
         DateTimeImmutable $expirationDate,
         Exposure $exposure,
         string $hash,
+        bool $burn,
+        int $read,
     )
     {
         $this->id = $id;
@@ -48,25 +54,32 @@ final class Paste
         $this->expirationDate = $expirationDate;
         $this->exposure = $exposure;
         $this->hash = $hash;
+        $this->burn = $burn;
+        $this->wasRead = $read;
     }
 
     public static function new(
+        ?int $id,
         ?string $title,
         string $content,
         DateTimeImmutable $releaseDate,
         DateTimeImmutable $expirationDate,
         Exposure $exposure,
         string $hash,
+        bool $burn,
+        int $read,
     ): self
     {
         return new self(
-            id: null,
+            id: $id,
             title: $title,
             content: $content,
             releaseDate: $releaseDate,
             expirationDate: $expirationDate,
             exposure: $exposure,
             hash: $hash,
+            burn: $burn,
+            read: $read,
         );
     }
 
@@ -127,5 +140,25 @@ final class Paste
     {
         $this->hash = $hash;
         return $this;
+    }
+
+    public function isBurn(): bool
+    {
+        return $this->burn;
+    }
+
+    public function setBurn(bool $burn): void
+    {
+        $this->burn = $burn;
+    }
+
+    public function getRead(): int
+    {
+        return $this->wasRead;
+    }
+
+    public function setRead(int $read): void
+    {
+        $this->wasRead = $read;
     }
 }

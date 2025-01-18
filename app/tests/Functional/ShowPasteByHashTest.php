@@ -59,6 +59,8 @@ class ShowPasteByHashTest extends KernelTestCase
             expirationDate: $currentDateTime->sub($minuteInterval),
             exposure: Exposure::Public,
             hash: (new DummyHashGenerator('678809cc085e9'))->getHash(),
+            burn: false,
+            read: 0
         );
         $this->entityManager->persist($paste);
         $this->entityManager->flush();
@@ -82,6 +84,8 @@ class ShowPasteByHashTest extends KernelTestCase
             expirationDate: $currentDateTime->add($hourInterval),
             exposure: Exposure::Public,
             hash: (new DummyHashGenerator('678809cc085e9'))->getHash(),
+            burn: false,
+            read: 0,
         );
         $this->entityManager->persist($paste);
         $this->entityManager->flush();

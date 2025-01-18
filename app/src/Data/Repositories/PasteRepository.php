@@ -14,6 +14,7 @@ use DateTimeImmutable;
 use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
+use Exception;
 use Knp\Component\Pager\PaginatorInterface;
 
 final readonly class PasteRepository implements PasteRepositoryInterface
@@ -34,16 +35,47 @@ final readonly class PasteRepository implements PasteRepositoryInterface
         return MapperPaste::pasteDbToPasteResponse($pasteDb);
     }
 
+    public function update(Paste $paste): PasteResponse
+    {
+        $pasteDb = $this->em->find(PasteDb::class, $paste->id);
+        $pasteDb->setExpirationDate($paste->expirationDate);
+        $this->em->flush();
+        $this->em->clear();
+        return MapperPaste::pasteDbToPasteResponse($pasteDb);
+    }
+
+    /**
+     * @throws Exception
+     */
     public function findPasteByHash(string $hash): ?PasteDb
     {
-        $currentDate = (new DateTimeImmutable())
-            ->setTimezone(new DateTimeZone('UTC'))
-            ->format('Y-m-d H:i:s');
-        $builder = $this
-            ->getQueryBuilderFindPasteByHash($hash)
-            ->andWhere('p.expirationDate >= :currentDate')
-            ->setParameter('currentDate', $currentDate);
-        return $builder->getQuery()->getOneOrNullResult();
+        $paste = null;
+        try {
+            $this->em->beginTransaction();
+            $currentDate = (new DateTimeImmutable())
+                ->setTimezone(new DateTimeZone('UTC'))
+                ->format('Y-m-d H:i:s');
+            $builder = $this
+                ->getQueryBuilderFindPasteByHash($hash)
+                ->andWhere('p.expirationDate >= :currentDate')
+                ->setParameter('currentDate', $currentDate);
+            $paste = $builder->getQuery()->getOneOrNullResult();
+            if (!is_null($paste)) {
+                $this->em
+                    ->createQueryBuilder()
+                    ->update(PasteDb::class, 'p')
+                    ->set('p.wasRead', $paste->getRead() + 1)
+                    ->where("p.id = :id")
+                    ->setParameter(':id', $paste->getId())
+                    ->getQuery()
+                    ->execute();
+            }
+            $this->em->commit();
+        } catch (Exception $e) {
+            $this->em->rollback();
+            throw new Exception(message: $e->getMessage(), previous: $e->getPrevious());
+        }
+        return $paste;
     }
 
     private function getQueryBuilderFindPasteByHash(string $hash): QueryBuilder
@@ -62,6 +94,9 @@ final readonly class PasteRepository implements PasteRepositoryInterface
         return !is_null($this->getQueryBuilderFindPasteByHash($hash)->getQuery()->getOneOrNullResult());
     }
 
+    /**
+     * @throws Exception
+     */
     public function getPasteByHash(string $hash): PasteResponse
     {
         $paste = $this->findPasteByHash($hash);

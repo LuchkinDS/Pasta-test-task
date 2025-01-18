@@ -46,6 +46,8 @@ class PasteByHashWebTest extends WebTestCase
             expirationDate: $currentDateTime->add($hourInterval),
             exposure: Exposure::Public,
             hash: (new DummyHashGenerator('678809cc085e9'))->getHash(),
+            burn: false,
+            read: 0,
         );
         $this->em->persist($paste);
         $this->em->flush();

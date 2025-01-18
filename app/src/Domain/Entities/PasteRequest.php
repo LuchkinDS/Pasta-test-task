@@ -9,6 +9,7 @@ final readonly class PasteRequest
         public string $content,
         public Expiration $expiration,
         public Exposure $exposure,
+        public bool $burn,
     )
     {
     }

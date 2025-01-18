@@ -11,6 +11,7 @@ interface PasteRepositoryInterface
 {
     public function getPasteByHash(string $hash): PasteResponse;
     public function create(Paste $paste): PasteResponse;
+    public function update(Paste $paste): PasteResponse;
     public function hasHash(string $hash): bool;
     public function getPublicPaste(Pager $pager): PastesResponse;
 }
