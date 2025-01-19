@@ -10,8 +10,8 @@ class MapperPager
     public static function pagerRequestToPager(PagerRequest $pager): Pager
     {
         return new Pager(
-            page: $pager->page,
-            limit: $pager->limit,
+            page: $pager->getPage(),
+            limit: $pager->getLimit(),
         );
     }
 }

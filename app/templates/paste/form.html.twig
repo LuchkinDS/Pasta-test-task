@@ -3,7 +3,7 @@
 {% block title %}Create your paste!{% endblock %}
 {% block body %}
 
-    {{ form_start(form, {'action': path('create_paste', {'XDEBUG_SESSION': 1}), 'method': 'POST'}) }}
+    {{ form_start(form, {'action': path('create_paste'), 'method': 'POST'}) }}
 
     <div class="mb-3">
         <label for="paste-form-content" class="form-label">{{ field_label(form.content) }}</label>

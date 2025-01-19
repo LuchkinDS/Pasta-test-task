@@ -8,7 +8,7 @@ final class Paste
 {
     private Exposure $exposure;
     public function __construct(
-        public readonly ?int              $id = null,
+        public readonly ?int              $id,
         public readonly ?string           $title,
         public readonly string            $content,
         public readonly DateTimeImmutable $releaseDate,
@@ -20,12 +20,6 @@ final class Paste
     )
     {
         $this->setExposure($exposure);
-    }
-
-    public static function burn()
-    {
-        // TODO: 1. фабрика для создания paste (в фабрику перенести генератор хэша, и enums)
-        // TODO: 2. в ответ от Data добавить id, для возможности апдейта pasta
     }
 
     public function getExposure(): Exposure

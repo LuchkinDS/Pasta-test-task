@@ -29,6 +29,7 @@ class PasteType extends AbstractType
                 'required' => false,
                 'empty_data' => false,
                 'value' => true,
+                'false_values' => [null, false, ''],
             ])
             ->add('cooking', SubmitType::class)
         ;

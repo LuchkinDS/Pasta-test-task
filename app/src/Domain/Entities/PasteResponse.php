@@ -6,7 +6,7 @@ use DateTimeImmutable;
 
 final readonly class PasteResponse
 {
-    const int READS_TO_BURN = 2;
+    const int READS_TO_BURN = 1;
 
     public function __construct(
         public int $id,
