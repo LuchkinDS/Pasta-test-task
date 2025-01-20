@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Presenter\Controllers;
+namespace App\Presenter\Controllers\Web;
 use App\Domain\Services\PasteService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Presenter\Controllers;
+namespace App\Presenter\Controllers\Web;
+
 use App\Domain\Services\PasteService;
 use App\Presenter\Entities\PagerRequest;
 use App\Presenter\Entities\PasteForm;
@@ -22,7 +23,7 @@ class CreatePasteAction extends AbstractController
         $form = $this->createForm(PasteType::class, $paste);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $pasteResponse = $services->createPaste(MapperPaste::pasteToPasteRequest($paste));
+            $pasteResponse = $services->createPaste(MapperPaste::pasteFormToPasteRequest($paste));
             $this->addFlash('posted_pasta','Your paste has been cooked!');
             return $this->redirectToRoute('show_paste', ['hash' => $pasteResponse->hash]);
         }

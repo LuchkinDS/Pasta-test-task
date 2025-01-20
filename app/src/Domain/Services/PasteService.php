@@ -4,7 +4,6 @@ namespace App\Domain\Services;
 
 use App\Domain\Entities\HashGeneratorInterface;
 use App\Domain\Entities\Pager;
-use App\Domain\Entities\Paste;
 use App\Domain\Entities\PasteCooker;
 use App\Domain\Entities\PasteRequest;
 use App\Domain\Entities\PasteResponse;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Presenter\Controllers;
+namespace App\Presenter\Controllers\Web;
 use App\Domain\Entities\Pager;
 use App\Domain\Exceptions\PasteNotFoundException;
 use App\Domain\Services\PasteService;

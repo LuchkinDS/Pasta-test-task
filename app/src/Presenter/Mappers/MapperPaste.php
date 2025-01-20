@@ -3,11 +3,13 @@
 namespace App\Presenter\Mappers;
 
 use App\Domain\Entities\PasteRequest;
+use App\Domain\Entities\PasteResponse;
 use App\Presenter\Entities\PasteForm;
+use App\Presenter\Entities\PastePresentation;
 
 class MapperPaste
 {
-    public static function pasteToPasteRequest(PasteForm $paste): PasteRequest
+    public static function pasteFormToPasteRequest(PasteForm $paste): PasteRequest
     {
         return new PasteRequest(
             title: $paste->title,
